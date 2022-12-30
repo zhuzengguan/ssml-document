@@ -4,7 +4,7 @@ import IRenderOptions from "./interface/IRenderOptions";
 import ServiceProvider from "./enums/ServiceProvoder";
 import ElementFactory from "./ElementFactory";
 import Element from "./elements/Element";
-import { BackgroundAudio, Effect, Prosody, Voice } from "./elements";
+import { BackgroundAudio, Effect, Emotion, Prosody, Voice } from "./elements";
 import Base from "./Base";
 import parser from './lib/parser';
 import util from "./lib/util";
@@ -200,6 +200,7 @@ export default class Document extends Base {
             case ServiceProvider.Amazon:
             case ServiceProvider.Tencent:
             case ServiceProvider.Xmov:
+            case ServiceProvider.Huoshanyun:
                 return "speak";
             default:
                 return null;
@@ -237,11 +238,18 @@ export default class Document extends Base {
         return this.findOne("prosody") as Prosody;
     }
 
+    get category() {
+        const emotion = this.findOne("emotion") as Emotion;
+        if(!emotion) return;
+        return emotion.category;
+    }
+    
     get speaker() {
         const voice = this.findOne("voice") as Voice;
         if(!voice) return;
         return voice.name;
     }
+
 
     get rate() {
         const prosody = this.findOne("prosody") as Prosody;
